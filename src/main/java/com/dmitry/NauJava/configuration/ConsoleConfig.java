@@ -1,16 +1,38 @@
 package com.dmitry.NauJava.configuration;
 
 import com.dmitry.NauJava.controller.ConsoleController;
+import com.dmitry.NauJava.controller.impl.ConsoleControllerImpl;
+import com.dmitry.NauJava.props.CommandProperties;
+import com.dmitry.NauJava.service.ConsoleValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import java.util.Scanner;
-
+/**
+ *
+ * Общий класс конфигурации консоли.
+ * В нем регистрируется бин, необходимые для работы с консолью,
+ * Если ввод пустой, логика просит вывести еще раз команду
+ * CommandProperties отвечает для команды, в нем есть данные о команде,
+ * ее описании, типе и количестве аргументов
+ * Валидатор выступает в качестве визитора, который инкапсулирует валидацию в себе
+ * После прохождения валидации , контроллер выполняет метод вызова к слою сервисов
+ * **/
 @Configuration
 public class ConsoleConfig {
+    private final CommandProperties commandProperties;
+    private final ConsoleController consoleController;
+    private final ConsoleValidatorService consoleValidatorService;
+
     @Autowired
-    private ConsoleController consoleController;
+    public ConsoleConfig(CommandProperties commandProperties,
+                         ConsoleControllerImpl consoleController,
+                         ConsoleValidatorService consoleValidatorService) {
+        this.commandProperties = commandProperties;
+        this.consoleController = consoleController;
+        this.consoleValidatorService = consoleValidatorService;
+    }
 
     @Bean
     public CommandLineRunner commandScanner()
@@ -19,17 +41,28 @@ public class ConsoleConfig {
         {
             try (Scanner scanner = new Scanner(System.in))
             {
-                System.out.println("Введите команду. 'exit' для выхода.");
+                commandProperties.printCommands();
                 while (true)
                 {
                     System.out.print("> ");
-                    String input = scanner.nextLine();
-                    if ("exit".equalsIgnoreCase(input.trim()))
-                    {
-                        System.out.println("Выход из программы...");
-                        break;
+                    String input = scanner.nextLine().trim().toLowerCase();
+                    if (input.isEmpty()) {
+                        System.out.println("Введите команду");
+                        continue;
                     }
-                    consoleController.processCommand(input);
+                    String[] cmd = input.split(" ");
+                    if (cmd[0].equals("exit")) {
+                        System.out.println("Выход из программы...");
+                        System.exit(0);
+                    }
+                    if (cmd[0].equals("help")) {
+                        commandProperties.printCommands();
+                    }
+                    if (consoleValidatorService.isNonValidConsole(cmd)) {
+                        System.out.println("Введите команду повторно или введите exit для выхода");
+                        continue;
+                    }
+                    consoleController.processCommand(cmd);
                 }
             }
         };

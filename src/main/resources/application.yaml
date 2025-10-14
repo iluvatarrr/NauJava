@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: NauJava
+app:
+  name: NauJava
+  version: v.1.0.0
+  actuator-base-url: http://localhost:8081/actuator
+  commands:
+    command-list:
+      exit:
+        pattern: "exit"
+        description: "выйти из программы"
+        count-of-arguments: 1
+        type-of-command: helper
+      help:
+        pattern: "help"
+        description: "вывести все команды"
+        count-of-arguments: 1
+        type-of-command: helper
+      create:
+        pattern: "create <id> <цель>"
+        description: "создать новую цель"
+        count-of-arguments: 3
+        type-of-command: performing
+      find:
+        pattern: "find <id>"
+        description: "найти цель по ID"
+        count-of-arguments: 2
+        type-of-command: performing
+      delete:
+        pattern: "delete <id>"
+        description: "удалить цель по ID"
+        count-of-arguments: 2
+        type-of-command: performing
+      update:
+        pattern: "update <id> <новая_цель>"
+        description: "обновить название цели"
+        count-of-arguments: 3
+        type-of-command: performing
+      metrics:
+        pattern: "metrics"
+        description: "вывод метрик"
+        count-of-arguments: 1
+        type-of-command: helper
+      metrics-detail:
+        pattern: "metrics <метрика>"
+        description: "вывод конкретной метрики в JSON"
+        count-of-arguments: 2
+        type-of-command: helper
+server:
+  port: 8081
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+logging:
+  level:
+    root: OFF

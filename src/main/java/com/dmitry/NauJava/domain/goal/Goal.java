@@ -3,7 +3,12 @@ package com.dmitry.NauJava.domain.goal;
 import com.dmitry.NauJava.domain.subGoal.SubGoal;
 import java.time.LocalDateTime;
 import java.util.List;
-
+/**Цель - основная единица проекта
+ Спроектирована,
+ чтобы позже иметь доступ к данным описания цели,
+ статусе, времени создания и выполнения
+ дедлайне, также она содержит подцели, реализована OneToMany связь
+ **/
 public class Goal {
     private Long id;
     private String title;
@@ -14,6 +19,27 @@ public class Goal {
     private LocalDateTime completedAt;
     private LocalDateTime deadline;
     private List<SubGoal> subGoalList;
+
+    public Goal() {}
+
+    public Goal(Long id, String title) {
+        this.id = id;
+        this.title = title;
+    }
+
+    public Goal(Long id, String title, String description,
+                GoalStatus goalStatus, GoalCategory goalCategory, LocalDateTime createdAt,
+                LocalDateTime completedAt, LocalDateTime deadline, List<SubGoal> subGoalList) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.goalStatus = goalStatus;
+        this.goalCategory = goalCategory;
+        this.createdAt = createdAt;
+        this.completedAt = completedAt;
+        this.deadline = deadline;
+        this.subGoalList = subGoalList;
+    }
 
     public Long getId() {
         return id;

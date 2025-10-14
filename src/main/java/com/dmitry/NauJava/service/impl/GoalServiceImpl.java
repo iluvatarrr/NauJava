@@ -5,7 +5,11 @@ import com.dmitry.NauJava.repository.impl.GoalRepository;
 import com.dmitry.NauJava.service.GoalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+/**
+Сервисный класс для работы с целями,
+ взаимодействует со слоем репозитория
+ Реализует CRUD функциональность
+ **/
 @Service
 public class GoalServiceImpl implements GoalService {
     private final GoalRepository goalRepository;
@@ -17,9 +21,7 @@ public class GoalServiceImpl implements GoalService {
 
     @Override
     public void create(Long id, String title) {
-        var goal = new Goal();
-        goal.setId(id);
-        goal.setTitle(title);
+        var goal = new Goal(id,title);
         goalRepository.create(goal);
     }
 
