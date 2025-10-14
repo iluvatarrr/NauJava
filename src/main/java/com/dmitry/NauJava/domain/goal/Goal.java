@@ -3,12 +3,13 @@ package com.dmitry.NauJava.domain.goal;
 import com.dmitry.NauJava.domain.subGoal.SubGoal;
 import java.time.LocalDateTime;
 import java.util.List;
-/**Цель - основная единица проекта
- Спроектирована,
- чтобы позже иметь доступ к данным описания цели,
- статусе, времени создания и выполнения
- дедлайне, также она содержит подцели, реализована OneToMany связь
- **/
+/**
+* Цель - основная единица проекта
+* Спроектирована,
+* чтобы позже иметь доступ к данным описания цели,
+* статусе, времени создания и выполнения
+* дедлайне, также она содержит подцели, реализована OneToMany связь
+*/
 public class Goal {
     private Long id;
     private String title;
@@ -115,9 +116,6 @@ public class Goal {
 
     @Override
     public String toString() {
-        return "Goal{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                '}';
+        return String.format("Цель: %s%n", title);
     }
 }

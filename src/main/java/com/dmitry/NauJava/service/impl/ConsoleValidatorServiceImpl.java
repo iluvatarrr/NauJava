@@ -5,11 +5,10 @@ import com.dmitry.NauJava.props.CommandProperties;
 import com.dmitry.NauJava.service.ConsoleValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-/**Класс для валидирования введенных данных (по концепции напоминает паттерн визитор)
-проверяет верно ли введена команда
-Оперирует классом CommandProperties
-для гибкой работы с параметрами команды
- **/
+/**
+* Класс для валидирования введенных данных (по концепции напоминает паттерн визитор) проверяет верно ли введена команда
+* Оперирует классом CommandProperties для гибкой работы с параметрами команды
+*/
 @Service
 public class ConsoleValidatorServiceImpl implements ConsoleValidatorService {
     @Autowired

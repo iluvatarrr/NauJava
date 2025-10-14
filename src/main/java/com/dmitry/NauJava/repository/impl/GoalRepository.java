@@ -5,11 +5,13 @@ import com.dmitry.NauJava.domain.goal.Goal;
 import com.dmitry.NauJava.repository.CrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-/**Слой для взаимодействия с данными
-Есть возможность выполнить CRUD функции. при отутствии данных кидает кастомную ошибку
- **/
+/**
+* Слой для взаимодействия с данными
+* Есть возможность выполнить CRUD функции. при отутствии данных кидает кастомную ошибку
+*/
 @Repository
 public class GoalRepository implements CrudRepository<Goal, Long> {
     private final Map<Long,Goal> goalContainer;
@@ -20,12 +22,17 @@ public class GoalRepository implements CrudRepository<Goal, Long> {
     }
 
     @Override
-    public void create(Goal entity) {
+    public List<Goal> findAll() {
+        return goalContainer.values().stream().toList();
+    }
+
+    @Override
+    public void save(Goal entity) {
         goalContainer.put(entity.getId(), entity);
     }
 
     @Override
-    public Goal read(Long id) throws ResourceNotFoundException {
+    public Goal findById(Long id) throws ResourceNotFoundException {
         return Optional.ofNullable(goalContainer.get(id))
                 .orElseThrow(() ->
                         new ResourceNotFoundException(String.format("No goal with id %s found", id)));
@@ -33,7 +40,7 @@ public class GoalRepository implements CrudRepository<Goal, Long> {
 
     @Override
     public void update(Goal entity) throws ResourceNotFoundException {
-        read(entity.getId());
+        findById(entity.getId());
         goalContainer.put(entity.getId(), entity);
     }
 

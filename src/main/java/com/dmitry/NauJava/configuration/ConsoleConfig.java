@@ -10,15 +10,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import java.util.Scanner;
 /**
- *
- * Общий класс конфигурации консоли.
- * В нем регистрируется бин, необходимые для работы с консолью,
- * Если ввод пустой, логика просит вывести еще раз команду
- * CommandProperties отвечает для команды, в нем есть данные о команде,
- * ее описании, типе и количестве аргументов
- * Валидатор выступает в качестве визитора, который инкапсулирует валидацию в себе
- * После прохождения валидации , контроллер выполняет метод вызова к слою сервисов
- * **/
+* Общий класс конфигурации консоли.
+* В нем регистрируется бин, необходимые для работы с консолью,
+* Если ввод пустой, логика просит вывести еще раз команду
+* CommandProperties отвечает для команды, в нем есть данные о команде,
+* ее описании, типе и количестве аргументов
+* Валидатор выступает в качестве визитора, который инкапсулирует валидацию в себе
+* После прохождения валидации , контроллер выполняет метод вызова к слою сервисов
+*/
 @Configuration
 public class ConsoleConfig {
     private final CommandProperties commandProperties;
@@ -51,16 +50,18 @@ public class ConsoleConfig {
                         continue;
                     }
                     String[] cmd = input.split(" ");
-                    if (cmd[0].equals("exit")) {
-                        System.out.println("Выход из программы...");
-                        System.exit(0);
-                    }
-                    if (cmd[0].equals("help")) {
-                        commandProperties.printCommands();
-                    }
-                    if (consoleValidatorService.isNonValidConsole(cmd)) {
-                        System.out.println("Введите команду повторно или введите exit для выхода");
-                        continue;
+                    switch (cmd[0].toLowerCase()) {
+                        case "help" -> commandProperties.printCommands();
+                        case "exit" -> {
+                            System.out.println("Выход из программы...");
+                            System.exit(0);
+                        }
+                        default -> {
+                            if (consoleValidatorService.isNonValidConsole(cmd)) {
+                                System.out.println("Введите команду повторно или введите exit для выхода");
+                                continue;
+                            }
+                        }
                     }
                     consoleController.processCommand(cmd);
                 }

@@ -2,9 +2,10 @@ package com.dmitry.NauJava.domain.subGoal;
 
 import com.dmitry.NauJava.domain.goal.GoalStatus;
 import java.time.LocalDateTime;
-/**Подцель - необходима для реализации поэтапного выполнения цели
-Содержит все поля, что и у цели, без указания типа
- **/
+/**
+* Подцель - необходима для реализации поэтапного выполнения цели
+* Содержит все поля, что и у цели, без указания типа
+*/
 public class SubGoal {
     private Long id;
     private String title;

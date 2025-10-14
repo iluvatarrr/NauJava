@@ -4,7 +4,7 @@ spring:
 app:
   name: NauJava
   version: v.1.0.0
-  actuator-base-url: http://localhost:8081/actuator
+  actuator-base-url: http://localhost:${server.port}/actuator
   commands:
     command-list:
       exit:
@@ -26,6 +26,11 @@ app:
         pattern: "find <id>"
         description: "найти цель по ID"
         count-of-arguments: 2
+        type-of-command: performing
+      all:
+        pattern: "all"
+        description: "вывести все цели"
+        count-of-arguments: 1
         type-of-command: performing
       delete:
         pattern: "delete <id>"

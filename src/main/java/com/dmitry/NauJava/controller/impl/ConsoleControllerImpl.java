@@ -7,9 +7,9 @@ import com.dmitry.NauJava.service.GoalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 /**
- * Контроллер работающий с слоями сервисов обрабатывает команды,
- * кетчит ошибки, не роняя приложение, это юзерфрендли
- * **/
+* Контроллер работающий с слоями сервисов обрабатывает команды,
+* кетчит ошибки, не роняя приложение, это юзерфрендли
+*/
 @Controller
 public class ConsoleControllerImpl implements ConsoleController {
     private final GoalService goalService;
@@ -27,7 +27,7 @@ public class ConsoleControllerImpl implements ConsoleController {
         {
             case "create" ->
             {
-                goalService.create(Long.valueOf(cmd[1]), cmd[2]);
+                goalService.save(Long.valueOf(cmd[1]), cmd[2]);
                 System.out.println("Цель успешно добавлена...");
             }
             case "delete" ->
@@ -56,6 +56,16 @@ public class ConsoleControllerImpl implements ConsoleController {
                     System.out.println(goal);
                 } catch (ResourceNotFoundException e) {
                     System.out.println("Цель не найдена");
+                }
+            }
+            case "all" ->
+            {
+                System.out.println("Цели: ");
+                var goals = goalService.findAll();
+                if (goals.isEmpty()) {
+                    System.out.println("Целей пока нет");
+                } else {
+                    goals.forEach(System.out::println);
                 }
             }
             case "metrics" -> {

@@ -3,14 +3,15 @@ package com.dmitry.NauJava.props;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import java.util.Map;
-/** Пропсы описывающие команды, помогает избавиться от хардкода в приложении,
-позволяет более гибко работать с командами
-Содержит список сложного объекта, манипулирует им
-private String pattern; - как вводить
-private String description; - что за команда
-private Integer countOfArguments; - сколько аргументов в команде
-private String typeOfCommand; - тип команды
- **/
+/**
+* Пропсы описывающие команды, помогает избавиться от хардкода в приложении,
+* позволяет более гибко работать с командами
+* Содержит список сложного объекта, манипулирует им
+* private String pattern; - как вводить
+* private String description; - что за команда
+* private Integer countOfArguments; - сколько аргументов в команде
+* private String typeOfCommand; - тип команды
+*/
 @Component
 @ConfigurationProperties(prefix = "app.commands")
 public class CommandProperties {
