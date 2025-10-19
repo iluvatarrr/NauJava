@@ -4,6 +4,8 @@ import com.dmitry.NauJava.domain.goal.Goal;
 import com.dmitry.NauJava.domain.group.Group;
 import com.dmitry.NauJava.domain.userProfile.UserProfile;
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;

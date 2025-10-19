@@ -1,10 +1,12 @@
 package com.dmitry.NauJava.service.impl;
 
+import com.dmitry.NauJava.domain.exception.ResourceNotFoundException;
 import com.dmitry.NauJava.domain.goal.Goal;
-import com.dmitry.NauJava.repository.nativeJava.impl.GoalCrudRepository;
+import com.dmitry.NauJava.repository.jpql.GoalRepository;
 import com.dmitry.NauJava.service.GoalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,11 +15,11 @@ import java.util.List;
  */
 @Service
 public class GoalServiceImpl implements GoalService {
-    private final GoalCrudRepository goalCrudRepository;
+    private final GoalRepository goalCrudRepository;
 
     @Autowired
-    public GoalServiceImpl(GoalCrudRepository goalCrudRepository) {
-        this.goalCrudRepository = goalCrudRepository;
+    public GoalServiceImpl(GoalRepository goalRepository) {
+        this.goalCrudRepository = goalRepository;
     }
 
     @Override
@@ -28,23 +30,24 @@ public class GoalServiceImpl implements GoalService {
 
     @Override
     public List<Goal> findAll() {
-        return goalCrudRepository.findAll();
+        return (ArrayList<Goal>) goalCrudRepository.findAll();
     }
 
     @Override
     public Goal findById(Long id) {
-        return goalCrudRepository.findById(id);
+        return goalCrudRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Goal not found"));
     }
 
     @Override
     public void deleteById(Long id) {
-        goalCrudRepository.delete(id);
+        goalCrudRepository.deleteById(id);
     }
 
     @Override
     public void updateGoalTitle(Long id, String goalTitle) {
         Goal user = findById(id);
         user.setTitle(goalTitle);
-        goalCrudRepository.update(user);
+        goalCrudRepository.save(user);
     }
 }

@@ -2,6 +2,7 @@ package com.dmitry.NauJava.domain.userProfile;
 
 import com.dmitry.NauJava.domain.user.User;
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
 
 /**
  * Профиль пользователь проекта
@@ -12,10 +13,11 @@ import jakarta.persistence.*;
 @Table(name = "user_profile")
 public class UserProfile {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @MapsId
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
     private String firstName;
     private String lastName;
@@ -37,14 +39,6 @@ public class UserProfile {
         this.lastName = lastName;
         this.countOfGoals = countOfGoals;
         this.countOfDoneGoals = countOfDoneGoals;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public User getUser() {
@@ -85,5 +79,13 @@ public class UserProfile {
 
     public void setCountOfDoneGoals(Integer countOfDoneGoals) {
         this.countOfDoneGoals = countOfDoneGoals;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -1,9 +1,9 @@
-package com.dmitry.NauJava;
+package com.dmitry.NauJava.goal;
 
 import com.dmitry.NauJava.domain.goal.Goal;
 import com.dmitry.NauJava.domain.subGoal.SubGoal;
 import com.dmitry.NauJava.repository.jpql.GoalRepository;
-import com.dmitry.NauJava.service.impl.TransactionalService;
+import com.dmitry.NauJava.service.impl.GoalSaverServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,27 +16,35 @@ import java.util.UUID;
  * Тестовый класс для проверки методов транцакционного сервиса.
  */
 @SpringBootTest
-public class TransactionalTest {
-    private final TransactionalService transactionalService;
+public class GoalSaverServiceTest {
+    private final GoalSaverServiceImpl transactionalServiceImpl;
     private final GoalRepository goalRepository;
 
     @Autowired
-    public TransactionalTest(final TransactionalService transactionalService, GoalRepository goalRepository) {
-        this.transactionalService = transactionalService;
+    public GoalSaverServiceTest(final GoalSaverServiceImpl transactionalServiceImpl, GoalRepository goalRepository) {
+        this.transactionalServiceImpl = transactionalServiceImpl;
         this.goalRepository = goalRepository;
     }
 
+    /**
+     * Тест сохраниения задачи и подзадач атомарно.
+     */
     @Test
     @Transactional
     public void transactionalPosTest() {
+        // Подготовка
         String title = UUID.randomUUID().toString();
         String description = UUID.randomUUID().toString();
         String titleSubGoal = UUID.randomUUID().toString();
         String descriptionSubGoal = UUID.randomUUID().toString();
+
+        // Действия
         var goal = new Goal(title, description);
         var subGoal = new SubGoal(goal, titleSubGoal, descriptionSubGoal);
-        var savedGoal = transactionalService.saveGoalWithSubGoals(goal, List.of(subGoal));
+        var savedGoal = transactionalServiceImpl.saveGoalWithSubGoals(goal, List.of(subGoal));
         var goalsFound = goalRepository.findByTitle(title);
+
+        // Проверки
         Assertions.assertNotNull(goalsFound);
         var goalFound = goalsFound.stream().findAny().get();
         Assertions.assertNotNull(goalFound);
@@ -53,16 +61,24 @@ public class TransactionalTest {
         Assertions.assertEquals(descriptionSubGoal, subGoalFounded.getDescription());
     }
 
+    /**
+     * Тест провального сохраниения задачи и подзадач атомарно.
+     */
     @Test
     public void transactionalNegTest() {
+        // Подготовка
         String title = UUID.randomUUID().toString();
         String description = UUID.randomUUID().toString();
         String titleSubGoal = UUID.randomUUID().toString();
         String descriptionSubGoal = UUID.randomUUID().toString();
+
+        // Действия
         var goal = new Goal(title, description);
         var subGoal = new SubGoal(goal, titleSubGoal, descriptionSubGoal);
+
+        // Проверки
         try {
-            transactionalService.saveGoalWithSubGoalsWithException(goal, List.of(subGoal));
+            transactionalServiceImpl.saveGoalWithSubGoalsWithException(goal, List.of(subGoal));
             Assertions.fail("Ожидалась ошибка");
         } catch (RuntimeException e) {
             Assertions.assertEquals("Транзакция откатилась", e.getMessage());

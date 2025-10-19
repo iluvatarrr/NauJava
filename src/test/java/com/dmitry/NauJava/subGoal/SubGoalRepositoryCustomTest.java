@@ -28,17 +28,25 @@ public class SubGoalRepositoryCustomTest {
         this.goalRepository = goalRepository;
     }
 
+    /**
+     * Тест поиска подзадачи по названию и описанию.
+     */
     @Test
     public void findByTitleAndDescriptionTest() {
+        // Подготовка
         String title = UUID.randomUUID().toString();
         String description = UUID.randomUUID().toString();
         String titleSubGoal = UUID.randomUUID().toString();
         String descriptionSubGoal = UUID.randomUUID().toString();
+
+        // Действия
         var goal = new Goal(title, description);
         goalRepository.save(goal);
         var subGoal = new SubGoal(goal, titleSubGoal, descriptionSubGoal);
         subGoalRepository.save(subGoal);
         var subGoals = subGoalRepositoryCustom.findByTitleAndDescription(titleSubGoal, descriptionSubGoal);
+
+        // Проверки
         Assertions.assertNotNull(subGoals);
         var subGoalsFound = subGoals.stream().findAny().get();
         Assertions.assertNotNull(subGoalsFound);
@@ -48,17 +56,25 @@ public class SubGoalRepositoryCustomTest {
         Assertions.assertEquals(descriptionSubGoal, subGoalsFound.getDescription());
     }
 
+    /**
+     * Тест поиска подзадачи по названию главной задачи.
+     */
     @Test
     public void findByGoalTitleTest() {
+        // Подготовка
         String title = UUID.randomUUID().toString();
         String description = UUID.randomUUID().toString();
         String titleSubGoal = UUID.randomUUID().toString();
         String descriptionSubGoal = UUID.randomUUID().toString();
+
+        // Действия
         var goal = new Goal(title, description);
         goalRepository.save(goal);
         var subGoal = new SubGoal(goal, titleSubGoal, descriptionSubGoal);
         subGoalRepository.save(subGoal);
         var subGoals = subGoalRepositoryCustom.findByGoalTitle(title);
+
+        // Проверки
         Assertions.assertNotNull(subGoals);
         var subGoalsFound = subGoals.stream().findAny().get();
         Assertions.assertNotNull(subGoalsFound);
