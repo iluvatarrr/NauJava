@@ -1,8 +1,8 @@
-package com.dmitry.NauJava.repository.impl;
+package com.dmitry.NauJava.repository.nativeJava.impl;
 
 import com.dmitry.NauJava.domain.exception.ResourceNotFoundException;
 import com.dmitry.NauJava.domain.goal.Goal;
-import com.dmitry.NauJava.repository.CrudRepository;
+import com.dmitry.NauJava.repository.nativeJava.CrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.Optional;
  * Есть возможность выполнить CRUD функции. при отутствии данных кидает кастомную ошибку
  */
 @Repository
-public class GoalRepository implements CrudRepository<Goal, Long> {
+public class GoalCrudRepository implements CrudRepository<Goal, Long> {
     private final Map<Long,Goal> goalContainer;
 
     @Autowired
-    public GoalRepository(Map<Long, Goal> goalContainer) {
+    public GoalCrudRepository(Map<Long, Goal> goalContainer) {
         this.goalContainer = goalContainer;
     }
 

@@ -1,4 +1,4 @@
-package com.dmitry.NauJava.repository;
+package com.dmitry.NauJava.repository.nativeJava;
 
 import com.dmitry.NauJava.domain.exception.ResourceNotFoundException;
 import com.dmitry.NauJava.domain.goal.Goal;
