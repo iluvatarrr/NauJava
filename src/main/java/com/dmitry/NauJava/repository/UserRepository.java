@@ -2,9 +2,10 @@ package com.dmitry.NauJava.repository;
 
 import com.dmitry.NauJava.domain.user.User;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import javax.management.relation.Role;
 import java.util.List;
@@ -18,12 +19,8 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findByEmailAndIsEnabled(String email, boolean isEnabled);
 
-    default List<User> findByRoleHQL(Role role, EntityManager entityManager) {
-        String hql = "FROM User u JOIN u.roles r WHERE r = :role";
-        TypedQuery<User> query = entityManager.createQuery(hql, User.class);
-        query.setParameter("role", role);
-        return query.getResultList();
-    }
+    @Query("FROM User u JOIN u.roles r WHERE r = :role")
+    List<User> findByRole(@Param("role") Role role);
 
     default List<User> findByRole(Role role, EntityManager entityManager) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

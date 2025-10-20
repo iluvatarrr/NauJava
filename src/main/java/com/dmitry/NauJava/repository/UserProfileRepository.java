@@ -3,9 +3,10 @@ package com.dmitry.NauJava.repository;
 import com.dmitry.NauJava.domain.user.User;
 import com.dmitry.NauJava.domain.userProfile.UserProfile;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
@@ -18,13 +19,8 @@ import java.util.Optional;
 public interface UserProfileRepository extends CrudRepository<UserProfile, Long> {
     List<UserProfile> findByFirstNameAndLastName(String firstName, String lastName);
 
-    default Optional<UserProfile> findByUserEmailHQL(String email, EntityManager entityManager) {
-        String hql = "FROM UserProfile up JOIN User u ON u.id = up.user.id WHERE u.email = :email";
-        TypedQuery<UserProfile> query = entityManager.createQuery(hql, UserProfile.class);
-        query.setParameter("email", email);
-        List<UserProfile> results =  query.getResultList();
-        return results.isEmpty() ? Optional.empty() : Optional.of(results.getFirst());
-    }
+    @Query("FROM UserProfile up JOIN User u ON u.id = up.user.id WHERE u.email = :email")
+    Optional<UserProfile> findByEmail(@Param("email") String email);
 
     default List<UserProfile> findByFirstNameAndLastName(String firstName, String lastName, EntityManager entityManager) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

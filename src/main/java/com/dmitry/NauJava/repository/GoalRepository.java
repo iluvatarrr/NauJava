@@ -2,9 +2,10 @@ package com.dmitry.NauJava.repository;
 
 import com.dmitry.NauJava.domain.goal.Goal;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
@@ -18,13 +19,8 @@ public interface GoalRepository extends CrudRepository<Goal, Long> {
 
     List<Goal> findByTitleOrderByCreatedAt(String title);
 
-    default List<Goal> findByTitleAndDescriptionHQL(String title, String description, EntityManager entityManager) {
-        String hql = "FROM Goal g WHERE g.title = :title AND g.description = :description";
-        TypedQuery<Goal> query = entityManager.createQuery(hql, Goal.class);
-        query.setParameter("title", title);
-        query.setParameter("description", description);
-        return query.getResultList();
-    }
+    @Query("FROM Goal g WHERE g.title = :title AND g.description = :description")
+    List<Goal> findByTitleAndDescription(@Param("title") String title, @Param("description") String description);
 
     default List<Goal> findByTitleAndDescription(String title, String description, EntityManager entityManager) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

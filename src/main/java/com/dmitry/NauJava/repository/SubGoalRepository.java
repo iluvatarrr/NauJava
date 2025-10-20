@@ -3,8 +3,9 @@ package com.dmitry.NauJava.repository;
 import com.dmitry.NauJava.domain.goal.Goal;
 import com.dmitry.NauJava.domain.subGoal.SubGoal;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.repository.CrudRepository;
 import java.util.List;
@@ -17,13 +18,8 @@ import java.util.List;
 public interface SubGoalRepository extends CrudRepository<SubGoal, Long> {
     List<SubGoal> findByGoalTitle(String title);
 
-    default List<SubGoal> findByTitleAndDescriptionHQL(String title, String description, EntityManager entityManager) {
-        String hql = "FROM SubGoal sg WHERE sg.title = :title AND sg.description = :description";
-        TypedQuery<SubGoal> query = entityManager.createQuery(hql, SubGoal.class);
-        query.setParameter("title", title);
-        query.setParameter("description", description);
-        return query.getResultList();
-    }
+    @Query("FROM SubGoal sg WHERE sg.title = :title AND sg.description = :description")
+    List<SubGoal> findByTitleAndDescription(@Param("title") String title,  @Param("description") String description);
 
     default List<SubGoal> findByTitleAndDescription(String title, String description, EntityManager entityManager) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

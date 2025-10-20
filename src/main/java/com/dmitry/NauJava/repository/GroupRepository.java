@@ -2,11 +2,12 @@ package com.dmitry.NauJava.repository;
 
 import com.dmitry.NauJava.domain.group.Group;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.repository.CrudRepository;
 import java.util.List;
@@ -19,13 +20,9 @@ import java.util.List;
 public interface GroupRepository extends CrudRepository<Group, Long> {
     List<Group> findByOrganisationAndIsPublic(String organisation, boolean isPublic);
 
-    default List<Group> findByTitleAndOrganisationHQL(String title, String organisation, EntityManager entityManager) {
-        String hql = "FROM Group g WHERE g.title = :title AND g.organisation = :organisation";
-        TypedQuery<Group> query = entityManager.createQuery(hql, Group.class);
-        query.setParameter("title", title);
-        query.setParameter("organisation", organisation);
-        return query.getResultList();
-    }
+    @Query("SELECT g FROM Group g WHERE g.title = :title AND g.organisation = :organisation")
+    List<Group> findByTitleAndOrganisation(@Param("title") String title,
+                                           @Param("organisation") String organisation);
 
     default List<Group> findByOrganisationAndIsPublic(String organisation, boolean isPublic, EntityManager entityManager) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
