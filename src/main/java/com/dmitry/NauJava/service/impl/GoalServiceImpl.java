@@ -2,7 +2,7 @@ package com.dmitry.NauJava.service.impl;
 
 import com.dmitry.NauJava.domain.exception.ResourceNotFoundException;
 import com.dmitry.NauJava.domain.goal.Goal;
-import com.dmitry.NauJava.repository.jpql.GoalRepository;
+import com.dmitry.NauJava.repository.GoalRepository;
 import com.dmitry.NauJava.service.GoalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

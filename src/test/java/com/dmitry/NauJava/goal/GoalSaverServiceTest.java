@@ -2,7 +2,7 @@ package com.dmitry.NauJava.goal;
 
 import com.dmitry.NauJava.domain.goal.Goal;
 import com.dmitry.NauJava.domain.subGoal.SubGoal;
-import com.dmitry.NauJava.repository.jpql.GoalRepository;
+import com.dmitry.NauJava.repository.GoalRepository;
 import com.dmitry.NauJava.service.impl.GoalSaverServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

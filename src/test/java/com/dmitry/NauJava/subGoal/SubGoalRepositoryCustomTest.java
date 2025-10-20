@@ -2,9 +2,9 @@ package com.dmitry.NauJava.subGoal;
 
 import com.dmitry.NauJava.domain.goal.Goal;
 import com.dmitry.NauJava.domain.subGoal.SubGoal;
-import com.dmitry.NauJava.repository.criteriaApi.SubGoalRepositoryCustom;
-import com.dmitry.NauJava.repository.jpql.GoalRepository;
-import com.dmitry.NauJava.repository.jpql.SubGoalRepository;
+import com.dmitry.NauJava.repository.GoalRepository;
+import com.dmitry.NauJava.repository.SubGoalRepository;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +17,15 @@ import java.util.UUID;
 @SpringBootTest
 public class SubGoalRepositoryCustomTest {
 
-    private final SubGoalRepositoryCustom subGoalRepositoryCustom;
     private final SubGoalRepository subGoalRepository;
     private final GoalRepository goalRepository;
+    private final EntityManager entityManager;
 
     @Autowired
-    public SubGoalRepositoryCustomTest(SubGoalRepositoryCustom subGoalRepositoryCustom, SubGoalRepository subGoalRepository, GoalRepository goalRepository) {
-        this.subGoalRepositoryCustom = subGoalRepositoryCustom;
-        this.subGoalRepository = subGoalRepository;
+    public SubGoalRepositoryCustomTest(SubGoalRepository subGoalRepository, GoalRepository goalRepository, EntityManager entityManager) {
+        this.subGoalRepository= subGoalRepository;
         this.goalRepository = goalRepository;
+        this.entityManager = entityManager;
     }
 
     /**
@@ -44,7 +44,7 @@ public class SubGoalRepositoryCustomTest {
         goalRepository.save(goal);
         var subGoal = new SubGoal(goal, titleSubGoal, descriptionSubGoal);
         subGoalRepository.save(subGoal);
-        var subGoals = subGoalRepositoryCustom.findByTitleAndDescription(titleSubGoal, descriptionSubGoal);
+        var subGoals = subGoalRepository.findByTitleAndDescription(titleSubGoal, descriptionSubGoal, entityManager);
 
         // Проверки
         Assertions.assertNotNull(subGoals);
@@ -73,7 +73,7 @@ public class SubGoalRepositoryCustomTest {
         goalRepository.save(goal);
         var subGoal = new SubGoal(goal, titleSubGoal, descriptionSubGoal);
         subGoalRepository.save(subGoal);
-        var subGoals = subGoalRepositoryCustom.findByGoalTitle(title);
+        var subGoals = subGoalRepository.findByGoalTitle(title, entityManager);
 
         // Проверки
         Assertions.assertNotNull(subGoals);

@@ -2,8 +2,9 @@ package com.dmitry.NauJava.userProfileTest;
 
 import com.dmitry.NauJava.domain.user.User;
 import com.dmitry.NauJava.domain.userProfile.UserProfile;
-import com.dmitry.NauJava.repository.jpql.UserProfileRepository;
-import com.dmitry.NauJava.repository.jpql.UserRepository;
+import com.dmitry.NauJava.repository.UserProfileRepository;
+import com.dmitry.NauJava.repository.UserRepository;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,14 @@ import java.util.UUID;
 public class UserProfileRepositoryTest {
     private final UserProfileRepository userProfileRepository;
     private final UserRepository userRepository;
+    private final EntityManager entityManager;
+
 
     @Autowired
-    public UserProfileRepositoryTest(UserProfileRepository userProfileRepository, UserRepository userRepository) {
+    public UserProfileRepositoryTest(UserProfileRepository userProfileRepository, UserRepository userRepository, EntityManager entityManager) {
         this.userProfileRepository = userProfileRepository;
         this.userRepository = userRepository;
+        this.entityManager = entityManager;
     }
 
     /**
@@ -71,7 +75,8 @@ public class UserProfileRepositoryTest {
         userRepository.save(user);
         var userProfile = new UserProfile(user, firstName, lastName);
         userProfileRepository.save(userProfile);
-        UserProfile userProfileFounded = userProfileRepository.findByEmail(email);
+        UserProfile userProfileFounded = userProfileRepository.findByEmail(email, entityManager).orElseThrow(() ->
+                new AssertionError("User Profile not found with email"));
 
         // Проверки
         Assertions.assertNotNull(userProfileFounded);

@@ -28,7 +28,7 @@ public class User implements Serializable {
     private String password;
     @Transient
     private String passwordConfirmation;
-    private boolean isEnabled;
+    private Boolean isEnabled;
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
