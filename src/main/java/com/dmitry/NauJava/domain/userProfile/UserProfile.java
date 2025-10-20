@@ -2,7 +2,6 @@ package com.dmitry.NauJava.domain.userProfile;
 
 import com.dmitry.NauJava.domain.user.User;
 import jakarta.persistence.*;
-import org.springframework.lang.NonNull;
 
 /**
  * Профиль пользователь проекта
@@ -14,7 +13,6 @@ import org.springframework.lang.NonNull;
 public class UserProfile {
     @Id
     private Long id;
-
     @MapsId
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
@@ -83,9 +81,5 @@ public class UserProfile {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

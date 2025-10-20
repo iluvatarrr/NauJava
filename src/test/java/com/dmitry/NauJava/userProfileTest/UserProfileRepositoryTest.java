@@ -48,7 +48,7 @@ public class UserProfileRepositoryTest {
         // Проверки
         Assertions.assertNotNull(userProfileFoundedList);
         Assertions.assertFalse(userProfileFoundedList.isEmpty());
-        var userProfileFound = userProfileFoundedList.get(0);
+        var userProfileFound = userProfileFoundedList.getFirst();
         Assertions.assertNotNull(userProfileFound);
         Assertions.assertEquals(user.getId(), userProfileFound.getId());
         Assertions.assertEquals(firstName, userProfileFound.getFirstName());

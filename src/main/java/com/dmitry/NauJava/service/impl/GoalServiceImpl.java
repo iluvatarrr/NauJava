@@ -6,7 +6,6 @@ import com.dmitry.NauJava.repository.jpql.GoalRepository;
 import com.dmitry.NauJava.service.GoalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +29,7 @@ public class GoalServiceImpl implements GoalService {
 
     @Override
     public List<Goal> findAll() {
-        return (ArrayList<Goal>) goalCrudRepository.findAll();
+        return (List<Goal>) goalCrudRepository.findAll();
     }
 
     @Override

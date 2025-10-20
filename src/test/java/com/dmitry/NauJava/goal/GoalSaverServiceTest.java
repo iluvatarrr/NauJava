@@ -46,7 +46,8 @@ public class GoalSaverServiceTest {
 
         // Проверки
         Assertions.assertNotNull(goalsFound);
-        var goalFound = goalsFound.stream().findAny().get();
+        var goalFound = goalsFound.stream().findAny().orElseThrow(() ->
+                new AssertionError("SubGoal not found"));
         Assertions.assertNotNull(goalFound);
         Assertions.assertTrue(goalsFound.stream().
                 map(Goal::getId).anyMatch(id -> savedGoal.getId().equals(id)));
@@ -55,8 +56,8 @@ public class GoalSaverServiceTest {
         var subGoalsFound = goalFound.getSubGoalList();
         Assertions.assertNotNull(subGoalsFound);
         Assertions.assertTrue(subGoalsFound.stream().
-                map(SubGoal::getId).anyMatch(id -> savedGoal.getSubGoalList().get(0).getId().equals(id)));
-        var subGoalFounded = subGoalsFound.get(0);
+                map(SubGoal::getId).anyMatch(id -> savedGoal.getSubGoalList().getFirst().getId().equals(id)));
+        var subGoalFounded = subGoalsFound.getFirst();
         Assertions.assertEquals(titleSubGoal, subGoalFounded.getTitle());
         Assertions.assertEquals(descriptionSubGoal, subGoalFounded.getDescription());
     }

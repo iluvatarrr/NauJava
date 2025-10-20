@@ -48,7 +48,8 @@ public class SubGoalRepositoryCustomTest {
 
         // Проверки
         Assertions.assertNotNull(subGoals);
-        var subGoalsFound = subGoals.stream().findAny().get();
+        var subGoalsFound = subGoals.stream().findAny().orElseThrow(() ->
+                new AssertionError("SubGoal not found"));
         Assertions.assertNotNull(subGoalsFound);
         Assertions.assertTrue(subGoals.stream().
                 map(SubGoal::getId).anyMatch(id -> subGoal.getId().equals(id)));
@@ -76,7 +77,8 @@ public class SubGoalRepositoryCustomTest {
 
         // Проверки
         Assertions.assertNotNull(subGoals);
-        var subGoalsFound = subGoals.stream().findAny().get();
+        var subGoalsFound = subGoals.stream().findAny().orElseThrow(() ->
+                new AssertionError("SubGoal not found"));
         Assertions.assertNotNull(subGoalsFound);
         Assertions.assertTrue(subGoals.stream().
                 map(SubGoal::getId).anyMatch(id -> subGoal.getId().equals(id)));
