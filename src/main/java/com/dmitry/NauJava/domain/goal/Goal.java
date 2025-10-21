@@ -1,26 +1,43 @@
 package com.dmitry.NauJava.domain.goal;
 
+import com.dmitry.NauJava.domain.group.Group;
 import com.dmitry.NauJava.domain.subGoal.SubGoal;
+import com.dmitry.NauJava.domain.user.User;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Цель - основная единица проекта
- * Спроектирована,
- * чтобы позже иметь доступ к данным описания цели,
+ * Спроектирована, чтобы позже иметь доступ к данным описания цели,
  * статусе, времени создания и выполнения
  * дедлайне, также она содержит подцели, реализована OneToMany связь
  */
+@Entity
+@Table(name = "goals")
 public class Goal {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String description;
+    @Enumerated(EnumType.STRING)
     private GoalStatus goalStatus;
+    @Enumerated(EnumType.STRING)
     private GoalCategory goalCategory;
     private LocalDateTime createdAt;
     private LocalDateTime completedAt;
     private LocalDateTime deadline;
-    private List<SubGoal> subGoalList;
+    @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<SubGoal> subGoalList = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToMany(mappedBy = "goals")
+    private Set<Group> groups = new HashSet<>();
 
     public Goal() {}
 
@@ -29,9 +46,14 @@ public class Goal {
         this.title = title;
     }
 
+    public Goal(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+
     public Goal(Long id, String title, String description,
                 GoalStatus goalStatus, GoalCategory goalCategory, LocalDateTime createdAt,
-                LocalDateTime completedAt, LocalDateTime deadline, List<SubGoal> subGoalList) {
+                LocalDateTime completedAt, LocalDateTime deadline, List<SubGoal> subGoalList, Set<Group> groups) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -41,14 +63,11 @@ public class Goal {
         this.completedAt = completedAt;
         this.deadline = deadline;
         this.subGoalList = subGoalList;
+        this.groups = groups;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -115,8 +134,24 @@ public class Goal {
         this.subGoalList = subGoalList;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return String.format("Цель: %s%n", title);
+    }
+
+    public Set<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Group> groups) {
+        this.groups = groups;
     }
 }

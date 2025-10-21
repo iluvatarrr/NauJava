@@ -1,6 +1,20 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
   application:
     name: NauJava
+  datasource:
+    url: jdbc:postgresql://${LOCALHOST:localhost}:5432/${POSTGRES_DATABASE}?currentSchema=${POSTGRES_SCHEMA}
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        hbm2ddl:
+          auto: update
+
 app:
   name: NauJava
   version: v.1.0.0
