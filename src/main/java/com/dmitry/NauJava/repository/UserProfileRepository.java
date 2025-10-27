@@ -7,7 +7,7 @@ import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +15,7 @@ import java.util.Optional;
  * Слой для взаимодействия с данными
  * Есть возможность выполнить CRUD функции.
  */
-@Repository
+@RepositoryRestResource(path = "user-profiles", exported = false)
 public interface UserProfileRepository extends CrudRepository<UserProfile, Long> {
     List<UserProfile> findByFirstNameAndLastName(String firstName, String lastName);
 

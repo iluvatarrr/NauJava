@@ -8,7 +8,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * Слой для взаимодействия с данными
  * Есть возможность выполнить CRUD функции.
  */
-@Repository
+@RepositoryRestResource(path = "groups", exported = false)
 public interface GroupRepository extends CrudRepository<Group, Long> {
     List<Group> findByOrganisationAndIsPublic(String organisation, boolean isPublic);
 

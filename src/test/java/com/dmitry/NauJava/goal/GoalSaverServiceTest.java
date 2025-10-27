@@ -3,7 +3,7 @@ package com.dmitry.NauJava.goal;
 import com.dmitry.NauJava.domain.goal.Goal;
 import com.dmitry.NauJava.domain.subGoal.SubGoal;
 import com.dmitry.NauJava.repository.GoalRepository;
-import com.dmitry.NauJava.service.impl.GoalSaverServiceImpl;
+import com.dmitry.NauJava.service.impl.GoalServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +17,12 @@ import java.util.UUID;
  */
 @SpringBootTest
 public class GoalSaverServiceTest {
-    private final GoalSaverServiceImpl transactionalServiceImpl;
+    private final GoalServiceImpl goalServiceImpl;
     private final GoalRepository goalRepository;
 
     @Autowired
-    public GoalSaverServiceTest(final GoalSaverServiceImpl transactionalServiceImpl, GoalRepository goalRepository) {
-        this.transactionalServiceImpl = transactionalServiceImpl;
+    public GoalSaverServiceTest(GoalServiceImpl goalServiceImpl, GoalRepository goalRepository) {
+        this.goalServiceImpl = goalServiceImpl;
         this.goalRepository = goalRepository;
     }
 
@@ -41,7 +41,7 @@ public class GoalSaverServiceTest {
         // Действия
         var goal = new Goal(title, description);
         var subGoal = new SubGoal(goal, titleSubGoal, descriptionSubGoal);
-        var savedGoal = transactionalServiceImpl.saveGoalWithSubGoals(goal, List.of(subGoal));
+        var savedGoal = goalServiceImpl.saveGoalWithSubGoals(goal, List.of(subGoal));
         var goalsFound = goalRepository.findByTitle(title);
 
         // Проверки
@@ -79,7 +79,7 @@ public class GoalSaverServiceTest {
 
         // Проверки
         try {
-            transactionalServiceImpl.saveGoalWithSubGoalsWithException(goal, List.of(subGoal));
+            goalServiceImpl.saveGoalWithSubGoalsWithException(goal, List.of(subGoal));
             Assertions.fail("Ожидалась ошибка");
         } catch (RuntimeException e) {
             Assertions.assertEquals("Транзакция откатилась", e.getMessage());
