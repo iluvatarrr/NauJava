@@ -3,6 +3,7 @@ package com.dmitry.NauJava.domain.goal;
 import com.dmitry.NauJava.domain.group.Group;
 import com.dmitry.NauJava.domain.subGoal.SubGoal;
 import com.dmitry.NauJava.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,8 +29,11 @@ public class Goal {
     private GoalStatus goalStatus;
     @Enumerated(EnumType.STRING)
     private GoalCategory goalCategory;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime completedAt;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime deadline;
     @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SubGoal> subGoalList = new ArrayList<>();

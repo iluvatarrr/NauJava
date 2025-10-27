@@ -6,14 +6,14 @@ import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.List;
 
 /**
  * Слой для взаимодействия с данными
  * Есть возможность выполнить CRUD функции.
  */
-@Repository
+@RepositoryRestResource(path = "goals")
 public interface GoalRepository extends CrudRepository<Goal, Long> {
     List<Goal> findByTitle(String title);
 

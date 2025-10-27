@@ -6,7 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * Слой для взаимодействия с данными
  * Есть возможность выполнить CRUD функции.
  */
-@Repository
+@RepositoryRestResource(path = "sub-goals", exported = false)
 public interface SubGoalRepository extends CrudRepository<SubGoal, Long> {
     List<SubGoal> findByGoalTitle(String title);
 

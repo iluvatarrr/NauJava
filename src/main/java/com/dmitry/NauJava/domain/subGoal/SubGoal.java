@@ -17,6 +17,7 @@ public class SubGoal {
     private Long id;
     private String title;
     private String description;
+    @Enumerated(EnumType.STRING)
     private GoalStatus goalStatus;
     private LocalDateTime createdAt;
     private LocalDateTime completedAt;
