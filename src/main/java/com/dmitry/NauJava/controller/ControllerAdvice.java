@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Класс обработчик ошибок.
  * Позволяет обрабатывать и выводить ошибки.
+ * Обрабатывает: ResourceNotFoundException
  */
 @RestControllerAdvice
 public class ControllerAdvice {
