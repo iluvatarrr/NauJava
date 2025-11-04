@@ -26,8 +26,6 @@ public class User implements Serializable {
     private Long id;
     private String email;
     private String password;
-    @Transient
-    private String passwordConfirmation;
     private Boolean isEnabled;
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
@@ -50,11 +48,9 @@ public class User implements Serializable {
     }
 
     public User(String email, String password,
-                String passwordConfirmation,
                 boolean isEnabled, Set<Role> roles, List<Goal> goals, UserProfile userProfile, Set<Group> groups) {
         this.email = email;
         this.password = password;
-        this.passwordConfirmation = passwordConfirmation;
         this.isEnabled = isEnabled;
         this.roles = roles;
         this.goals = goals;
@@ -80,14 +76,6 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getPasswordConfirmation() {
-        return passwordConfirmation;
-    }
-
-    public void setPasswordConfirmation(String passwordConfirmation) {
-        this.passwordConfirmation = passwordConfirmation;
     }
 
     public boolean isEnabled() {
