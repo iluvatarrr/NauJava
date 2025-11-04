@@ -18,6 +18,7 @@ import java.util.Optional;
 @RepositoryRestResource(path = "users", exported = false)
 public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findByEmailAndIsEnabled(String email, boolean isEnabled);
+    Optional<User> findByEmail(String email);
 
     @Query("FROM User u JOIN u.roles r WHERE r = :role")
     List<User> findByRole(@Param("role") Role role);

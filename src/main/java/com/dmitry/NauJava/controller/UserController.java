@@ -1,28 +1,32 @@
 package com.dmitry.NauJava.controller;
 
-import com.dmitry.NauJava.domain.user.User;
-import com.dmitry.NauJava.repository.UserRepository;
+import com.dmitry.NauJava.dto.UserDto;
+import com.dmitry.NauJava.mapper.UserMapper;
+import com.dmitry.NauJava.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Контроллер пользователей.
- * Работает напрямую с репозиторием по условию задания.
- * Позволяет выводить список пользователей
  */
-@Controller
-@RequestMapping("/users")
+@RestController
+@RequestMapping("/api/v1/users")
 public class UserController {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserService userService;
+    private final UserMapper userMapper;
 
-    @GetMapping("/list")
-    public String getUsers(Model model) {
-        Iterable<User> products = userRepository.findAll();
-        model.addAttribute("users", products);
-        return "index";
+    @Autowired
+    public UserController(UserService userService, UserMapper userMapper) {
+        this.userService = userService;
+        this.userMapper = userMapper;
+    }
+
+    @PostMapping
+    public UserDto createUser(@RequestBody UserDto userDto) {
+        var user = userMapper.toEntity(userDto);
+        return userMapper.toDto(userService.save(user));
     }
 }

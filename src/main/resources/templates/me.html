@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>My Profile</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h2>Username:</h2>
+    <span th:text="${username}">Username</span>
+    <form th:action="@{/logout}" method="get">
+        <button type="submit" class="btn danger">Logout</button>
+    </form>
+</body>
+</html>
