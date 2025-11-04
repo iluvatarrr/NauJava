@@ -6,7 +6,7 @@ import java.util.Collection;
 
 /**
  * AuthEntity - реализация UserDetails.
- * Содердил поля ника пользователя, пароля и ролей
+ * Содержит поля: логин, пароль и роли.
  */
 public class AuthEntity implements UserDetails {
     private final String username;

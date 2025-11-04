@@ -53,9 +53,4 @@ public class AuthController {
         model.addAttribute("username", username);
         return "me";
     }
-
-    @GetMapping("/logout")
-    public String logout() {
-        return "redirect:/api/v1/auth/login";
-    }
 }
