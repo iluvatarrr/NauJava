@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 /**
  * ReportServiceImpl - реализация ReportService.
@@ -58,33 +59,25 @@ public class ReportServiceImpl implements ReportService {
     public void formationReportAsync(Report report) {
         CompletableFuture.runAsync(() -> {
             try {
-                long startTime = System.currentTimeMillis();
-
-                long userCountStartTime = System.currentTimeMillis();
-                CompletableFuture<Long> userCountFuture = CompletableFuture
-                        .supplyAsync(this::calculateUserCountInThread);
-                Long userCount = userCountFuture.join();
-                long userCountElapsed = System.currentTimeMillis() - userCountStartTime;
-
-                long goalsStartTime = System.currentTimeMillis();
-                CompletableFuture<List<Goal>> goalListFuture = CompletableFuture
-                        .supplyAsync(this::getAllGoal);
-                List<Goal> goalList = goalListFuture.join();
-                long goalsElapsed = System.currentTimeMillis() - goalsStartTime;
-
-                long totalElapsed = System.currentTimeMillis() - startTime;
-
-                String reportContent = generateReport(userCount, userCountElapsed, goalList,
-                        goalsElapsed, totalElapsed, report.getContent());
-                report.setContent(reportContent);
-                report.setStatus(ReportStatus.FINISHED);
+                var startTime = System.currentTimeMillis();
+                AsyncResult<Long> userCountResult = executeAsyncWithTiming(this::calculateUserCountInThread);
+                AsyncResult<List<Goal>> goalsResult = executeAsyncWithTiming(this::getAllGoal);
+                var totalElapsed = System.currentTimeMillis() - startTime;
+                String reportContent = generateReport(userCountResult.result, userCountResult.elapsedTime,
+                        goalsResult.result, goalsResult.elapsedTime, totalElapsed, report.getContent());
+                fillReport(report, reportContent, ReportStatus.FINISHED);
                 reportRepository.save(report);
             } catch (Exception e) {
-                report.setStatus(ReportStatus.ERROR);
-                report.setContent(String.format("Error during report generation: %s", e.getMessage()));
+                var reportContent = String.format("Error during report generation: %s", e.getMessage());
+                fillReport(report, reportContent, ReportStatus.ERROR);
                 reportRepository.save(report);
             }
         });
+    }
+
+    private void fillReport(Report report, String reportContent, ReportStatus reportStatus) {
+        report.setContent(reportContent);
+        report.setStatus(reportStatus);
     }
 
     private String generateReport(Long userCount, long userCountTime,
@@ -119,7 +112,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private Long calculateUserCountInThread() {
-        return userService.findAll().stream().count();
+        return userService.count();
     }
 
     private List<Goal> getAllGoal() {
@@ -129,5 +122,15 @@ public class ReportServiceImpl implements ReportService {
     public void startReportFormation(Long reportId) {
         Report report = findById(reportId);
         formationReportAsync(report);
+    }
+
+    private <T> AsyncResult<T> executeAsyncWithTiming(Supplier<T> supplier) {
+        var startTime = System.currentTimeMillis();
+        T result = CompletableFuture.supplyAsync(supplier).join();
+        var elapsed = System.currentTimeMillis() - startTime;
+        return new AsyncResult<>(result, elapsed);
+    }
+
+    private record AsyncResult<T>(T result, long elapsedTime) {
     }
 }
