@@ -3,8 +3,8 @@ package com.dmitry.NauJava.repository;
 import com.dmitry.NauJava.domain.user.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import javax.management.relation.Role;
@@ -13,10 +13,10 @@ import java.util.Optional;
 
 /**
  * Слой для взаимодействия с данными
- * Есть возможность выполнить CRUD функции.
+ * Реализует JPA репозиторий.
  */
 @RepositoryRestResource(path = "users", exported = false)
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmailAndIsEnabled(String email, boolean isEnabled);
     Optional<User> findByEmail(String email);
 
