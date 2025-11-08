@@ -148,7 +148,7 @@ public class Goal {
 
     @Override
     public String toString() {
-        return String.format("Цель: %s%n", title);
+        return String.format("Цель:id:%s%n*title:%s%n*description:%s%n", id, title, description);
     }
 
     public Set<Group> getGroups() {

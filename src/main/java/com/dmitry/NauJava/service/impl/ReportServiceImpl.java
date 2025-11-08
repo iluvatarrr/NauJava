@@ -66,11 +66,9 @@ public class ReportServiceImpl implements ReportService {
                 String reportContent = generateReport(userCountResult.result, userCountResult.elapsedTime,
                         goalsResult.result, goalsResult.elapsedTime, totalElapsed, report.getContent());
                 fillReport(report, reportContent, ReportStatus.FINISHED);
-                reportRepository.save(report);
             } catch (Exception e) {
                 var reportContent = String.format("Error during report generation: %s", e.getMessage());
                 fillReport(report, reportContent, ReportStatus.ERROR);
-                reportRepository.save(report);
             }
         });
     }
@@ -78,12 +76,17 @@ public class ReportServiceImpl implements ReportService {
     private void fillReport(Report report, String reportContent, ReportStatus reportStatus) {
         report.setContent(reportContent);
         report.setStatus(reportStatus);
+        reportRepository.save(report);
     }
 
     private String generateReport(Long userCount, long userCountTime,
                                   List<Goal> goals, long goalsTime,
                                   long totalTime, String originalContent) {
-        var goalsString =  String.join("<br>", goals.stream().map(Goal::toString).toList());
+        System.out.println(goals.getFirst().toString());
+        var goalsString =  String.join("   <hr>",
+                goals.stream()
+                     .map(g -> g.toString().replace("*", "    <br>"))
+                     .toList());
         return String.format(
                 """
                 <!DOCTYPE html>
