@@ -16,7 +16,7 @@ import java.util.UUID;
  * Тестовый класс для проверки методов транцакционного сервиса.
  */
 @SpringBootTest
-public class GoalSaverServiceTest {
+class GoalSaverServiceTest {
     private final GoalServiceImpl goalServiceImpl;
     private final GoalRepository goalRepository;
 
@@ -31,7 +31,7 @@ public class GoalSaverServiceTest {
      */
     @Test
     @Transactional
-    public void transactionalPosTest() {
+    void transactionalPosTest() {
         // Подготовка
         String title = UUID.randomUUID().toString();
         String description = UUID.randomUUID().toString();
@@ -66,7 +66,7 @@ public class GoalSaverServiceTest {
      * Тест провального сохраниения задачи и подзадач атомарно.
      */
     @Test
-    public void transactionalNegTest() {
+    void transactionalNegTest() {
         // Подготовка
         String title = UUID.randomUUID().toString();
         String description = UUID.randomUUID().toString();
