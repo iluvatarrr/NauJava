@@ -15,7 +15,7 @@ import java.util.UUID;
  * Тестовый класс для проверки методов репозитория подцелей.
  */
 @SpringBootTest
-public class SubGoalRepositoryCustomTest {
+class SubGoalRepositoryCustomTest {
 
     private final SubGoalRepository subGoalRepository;
     private final GoalRepository goalRepository;
@@ -32,7 +32,7 @@ public class SubGoalRepositoryCustomTest {
      * Тест поиска подзадачи по названию и описанию.
      */
     @Test
-    public void findByTitleAndDescriptionTest() {
+    void findByTitleAndDescriptionTest() {
         // Подготовка
         String title = UUID.randomUUID().toString();
         String description = UUID.randomUUID().toString();
@@ -61,7 +61,7 @@ public class SubGoalRepositoryCustomTest {
      * Тест поиска подзадачи по названию главной задачи.
      */
     @Test
-    public void findByGoalTitleTest() {
+    void findByGoalTitleTest() {
         // Подготовка
         String title = UUID.randomUUID().toString();
         String description = UUID.randomUUID().toString();

@@ -20,6 +20,7 @@ public class UserMapper implements Mappable<User, UserDto> {
         User user = new User();
         user.setEmail(dto.email());
         user.setRoles(dto.roles());
+        user.setPassword(dto.password());
         return user;
     }
 
@@ -30,7 +31,8 @@ public class UserMapper implements Mappable<User, UserDto> {
         }
         return new UserDto(
                 entity.getEmail(),
-                entity.getRoles()
+                entity.getRoles(),
+                entity.getPassword()
         );
     }
 

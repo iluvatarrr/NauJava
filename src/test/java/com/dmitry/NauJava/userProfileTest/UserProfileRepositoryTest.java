@@ -18,7 +18,7 @@ import java.util.UUID;
  */
 @SpringBootTest
 @Transactional // Добавить транзакционность
-public class UserProfileRepositoryTest {
+class UserProfileRepositoryTest {
     private final UserProfileRepository userProfileRepository;
     private final UserRepository userRepository;
     private final EntityManager entityManager;
@@ -35,7 +35,7 @@ public class UserProfileRepositoryTest {
      * Тест поиска профиля по имени и фамилии.
      */
     @Test
-    void findByFirstNameAndLastNameTest() {
+    void testFindByFirstNameAndLastName() {
         // Подготовка
         String firstName = UUID.randomUUID().toString();
         String lastName = UUID.randomUUID().toString();
@@ -63,7 +63,7 @@ public class UserProfileRepositoryTest {
      * Тест проверки поиска профиля по email пользователя.
      */
     @Test
-    void findByEmailTest() {
+    void testFindByEmail() {
         // Подготовка
         String firstName = UUID.randomUUID().toString();
         String lastName = UUID.randomUUID().toString();

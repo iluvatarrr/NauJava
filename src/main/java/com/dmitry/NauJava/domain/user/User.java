@@ -26,7 +26,7 @@ public class User implements Serializable {
     private Long id;
     private String email;
     private String password;
-    private Boolean isEnabled;
+    private boolean isEnabled;
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
@@ -56,6 +56,11 @@ public class User implements Serializable {
         this.goals = goals;
         this.userProfile = userProfile;
         this.groups = groups;
+    }
+
+    public User(String email, Set<Role> roles) {
+        this.email = email;
+        this.roles = roles;
     }
 
     public Long getId() {
